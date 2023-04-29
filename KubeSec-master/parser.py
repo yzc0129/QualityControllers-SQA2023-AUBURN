@@ -6,6 +6,7 @@ Parser to file YAML files
 
 import yaml
 import constants 
+import logging_forensic
 
 def checkIfWeirdYAML(yaml_script):
     '''
@@ -98,6 +99,8 @@ def getValsFromKey(dict_, target, list_holder  ):
     If you give a key, then this function gets the corresponding values 
     Multiple values are returned if there are keys with the same name  
     '''    
+    logObj = logging_forensic.giveMeLoggingObject()
+    logObj.info('LOG : Executing getValsFromKey with parameters in parser.py: dict_=%s, target=%s, list_holder=%s', dict_, target, list_holder)
     if ( isinstance( dict_, dict ) ):
         for key, value in dict_.items():
             # print( key, len(key) , target, len( target ), value  )
@@ -120,20 +123,35 @@ def checkIfValidHelm(path_script):
 def readYAMLAsStr( path_script ):
     yaml_as_str = constants.YAML_SKIPPING_TEXT
     with open( path_script , constants.FILE_READ_FLAG) as file_:
+        #record an error event in case an error occurs while reading a YAML file.
+        logObj = logging_forensic.giveMeLoggingObject()
+        logObj.error("LOG : Error reading YAML file at path '{path_script}': {str(e)}")
         yaml_as_str = file_.read()
     return yaml_as_str
 
 def loadMultiYAML( script_ ):
     dicts2ret = []
+    #to indicate that we are about to open the YAML file specified by script.
+    logObj = logging_forensic.giveMeLoggingObject()
+    logObj.info("LOG : Opening YAML file at path '{script_}'")
     with open(script_, constants.FILE_READ_FLAG  ) as yml_content :
         try:
             for d_ in yaml.safe_load_all(yml_content) :
                 # print(d_)
                 # print('='*25)
+                # to indicate that we are processing each dictionary in the YAML file. 
+                logObj = logging_forensic.giveMeLoggingObject()
+                logObj.debug("LOG : Processing dictionary in YAML file in method loadMultiYAML - parser.py")
                 dicts2ret.append( d_ )
         except yaml.YAMLError as exc:
+            #to indicate that an error has occurred while processing the YAML file.
+            logObj = logging_forensic.giveMeLoggingObject()
+            logObj.error("LOG : Error reading YAML file at path '{script_}': {exc}")
             print( constants.YAML_SKIPPING_TEXT  )    
         except UnicodeDecodeError as err_: 
+            #to indicate that an error has occurred while processing the YAML file.
+            logObj = logging_forensic.giveMeLoggingObject()
+            logObj.error("LOG : Error reading YAML file at path '{script_}': {exc}")
             print( constants.YAML_SKIPPING_TEXT  )    
     return dicts2ret 
 
@@ -142,6 +160,9 @@ def getSingleDict4MultiDocs( lis_dic ):
     dict2ret = {} 
     key_lis  = []
     counter  = 0 
+    # to indicate that we are starting to process multiple dictionaries.
+    logObj = logging_forensic.giveMeLoggingObject()
+    logObj.info("LOG : Processing multiple dictionaries to create a single dictionary in getSingleDict4MultiDocs - parser.py")
     for dic in lis_dic:
         # print(dic)
         # print('='*100)
@@ -160,9 +181,15 @@ def getSingleDict4MultiDocs( lis_dic ):
         to handle Nones 
         '''
         if ( (dic is None) == False  ) and (isinstance(dic, dict ) ):
+            #to indicate that a dictionary is being skipped because it is None.
+            logObj = logging_forensic.giveMeLoggingObject()
+            logObj.warning("LOG : Skipping dictionary because it is None in getSingleDict4MultiDocs - parser.py")
             keys4dic = list(dic.keys()) 
             for k_ in keys4dic: 
                 if k_ in key_lis:
+                    # to indicate that we are adding a key-value pair to the output dictionary.
+                    logObj = logging_forensic.giveMeLoggingObject()
+                    logObj.info("LOG : Adding key-value pair to output dictionary: {k_}:{dic[k_]}")
                     dict2ret[k_ + constants.DOT_SYMBOL + constants.YAML_DOC_KW + str(counter)] = dic[k_]
                 else:
                     key_lis.append( k_ )
@@ -196,8 +223,11 @@ if __name__=='__main__':
     
     # invalid_yaml = 'TEST_ARTIFACTS/bootstrap.debian.yaml'
     # print(checkIfValidK8SYaml( invalid_yaml )  )
-    
+
     multi_yaml  = 'TEST_ARTIFACTS/multi.doc.yaml'
+    #that we are starting to load a multi-document YAML file - lead to poisoning attack
+    logObj = logging_forensic.giveMeLoggingObject()
+    logObj.info("LOG : Loading multi-document YAML file in parser.py: {multi_yaml}")
     dics        = loadMultiYAML(multi_yaml)
     getSingleDict4MultiDocs( dics )
 

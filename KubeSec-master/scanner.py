@@ -9,6 +9,7 @@ import graphtaint
 import os 
 import pandas as pd 
 import numpy as np 
+import logging_forensic
 
 def getYAMLFiles(path_to_dir):
     valid_  = [] 
@@ -762,5 +763,6 @@ if __name__ == '__main__':
 
     # cap_sys_module_yaml = 'TEST_ARTIFACTS/cap-module-ostk.yaml'
     # cap_sys_module_dic  = scanForCAPMODULE ( cap_sys_module_yaml )   
-
+    logObj = logging_forensic.giveMeLoggingObject()
+    logObj.exception('LOG : Error in file scanner.py')
     print(cap_sys_module_dic)  

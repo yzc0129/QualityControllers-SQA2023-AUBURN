@@ -6,8 +6,11 @@ Source Code to Run Tool on All Kubernetes Manifests
 import scanner 
 import pandas as pd 
 import constants
+import logging_forensic
 
 def getCountFromAnalysis(ls_):
+    logObj = logging_forensic.giveMeLoggingObject()
+    logObj.info('Executing getCountFromAnalysis main.py')
     list2ret           = []
     for tup_ in ls_:
         within_sec_cnt = 0 
@@ -63,8 +66,13 @@ if __name__ == '__main__':
 
     # ORG_DIR         = '/Users/arahman/K8S_REPOS/TEST_REPOS/'
     # OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/Kubernetes/StaticTaint/data/V16_TEST_OUTPUT.csv'
-
+    #logging if path is not found
+    logObj = logging_forensic.giveMeLoggingObject()
+    logObj.exception('LOG : Error in file main.py')
     content_as_ls   = scanner.runScanner( ORG_DIR )
+    # poisoning attack - might be from the data used from the dataset 
+    logObj = logging_forensic.giveMeLoggingObject()
+    logObj.warning('LOG :chance of poisoning attack in file main.py')
     df_all          = pd.DataFrame( getCountFromAnalysis( content_as_ls ) )
 
     df_all.to_csv( OUTPUT_FILE_CSV, header= constants.CSV_HEADER , index=False, encoding= constants.CSV_ENCODING ) 

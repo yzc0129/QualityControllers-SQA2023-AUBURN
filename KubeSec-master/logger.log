@@ -1,0 +1,17 @@
+logger-2023-04-29 13:50:07,606 - 23792 -INFO- LOG : Opening YAML file at path '{script_}'
+logger-2023-04-29 13:50:07,639 - 23792 -INFO- LOG : Loading multi-document YAML file in parser.py: {multi_yaml}
+logger-2023-04-29 13:50:07,639 - 23792 -INFO- LOG : Opening YAML file at path '{script_}'
+logger-2023-04-29 13:50:07,674 - 23792 -INFO- LOG : Processing multiple dictionaries to create a single dictionary in getSingleDict4MultiDocs - parser.py
+logger-2023-04-29 13:50:07,674 - 23792 -WARNING- LOG : Skipping dictionary because it is None in getSingleDict4MultiDocs - parser.py
+logger-2023-04-29 13:50:07,674 - 23792 -WARNING- LOG : Skipping dictionary because it is None in getSingleDict4MultiDocs - parser.py
+logger-2023-04-29 13:50:07,674 - 23792 -INFO- LOG : Adding key-value pair to output dictionary: {k_}:{dic[k_]}
+logger-2023-04-29 13:50:07,676 - 23792 -INFO- LOG : Adding key-value pair to output dictionary: {k_}:{dic[k_]}
+logger-2023-04-29 13:50:07,676 - 23792 -INFO- LOG : Adding key-value pair to output dictionary: {k_}:{dic[k_]}
+logger-2023-04-29 13:50:07,676 - 23792 -INFO- LOG : Adding key-value pair to output dictionary: {k_}:{dic[k_]}
+logger-2023-04-29 13:50:22,505 - 12160 -INFO- LOG : Executing graphtaint.py
+logger-2023-04-29 13:50:24,420 - 12160 -ERROR- LOG : Error in file main.py
+NoneType: None
+logger-2023-04-29 13:50:27,654 - 10600 -INFO- LOG : Executing graphtaint.py
+logger-2023-04-29 13:50:31,449 - 22804 -INFO- LOG : Executing graphtaint.py
+logger-2023-04-29 13:50:32,044 - 22804 -ERROR- LOG : Error in file scanner.py
+NoneType: None
